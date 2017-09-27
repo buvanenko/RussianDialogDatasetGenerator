@@ -19,6 +19,7 @@
 ###################################################################
 
 import re
+import math
 import json
 import codecs
 import xml.etree.ElementTree
@@ -93,20 +94,48 @@ numberOfDistinctWords = len(words)
 filteredWords = {k:v for k,v in words.iteritems() if len(k) >= MIN_WORD_LENGTH}
 topWords = sorted(filteredWords.iteritems(), key=lambda x:-x[1])[:10]
 
+wordCountGroups = []
+groupLength = math.ceil(wordsInUtteranceMax/100.0)
+for i in range(101)[1:101]:
+    max = int(i*groupLength)
+    min = int(i*groupLength - groupLength)
+    wordCountGroups.append(([min, max], 0))
+
+utteranceCountGroups = []
+groupLength = math.ceil(utterancesInConversationMax/50.0)
+for i in range(51)[1:51]:
+    max = int(i*groupLength)
+    min = int(i*groupLength - groupLength)
+    utteranceCountGroups.append(([min, max], 0))
+
 averageNumberOfTurnsPerConversation = 0
+
 for conversation in conversations:
     participants = {}
     turnsCount = 0
     for utterance in conversation:
         uid = utterance[0]
+        text = utterance[1]
         if uid in participants:
             participants[uid] += 1
             turnsCount += 1
         else:
             participants[uid] = 1
-    averageNumberOfTurnsPerConversation += turnsCount
-averageNumberOfTurnsPerConversation /= numberOfConversations
 
+        wordCount = len(text.split())
+        for i in range(len(wordCountGroups)):
+            group = wordCountGroups[i];
+            if wordCount >= group[0][0] and wordCount < group[0][1]:
+                wordCountGroups[i] = (group[0], group[1]+1)
+    averageNumberOfTurnsPerConversation += turnsCount
+
+    utteranceCount = len(conversation)
+    for i in range(len(utteranceCountGroups)):
+        group = utteranceCountGroups[i];
+        if utteranceCount >= group[0][0] and utteranceCount < group[0][1]:
+            utteranceCountGroups[i] = (group[0], group[1]+1)
+
+averageNumberOfTurnsPerConversation /= numberOfConversations
 
 # Print the corpus description
 
@@ -126,6 +155,12 @@ print "Least number of words in an utterance = " + str(wordsInUtteranceMin)
 print "Most number of words in an utterance = " + str(wordsInUtteranceMax)
 print "Average number of words per utterance = " + str(averageNumberOfWordsPerUtterance)
 
+print "Word count per utterance distribution = "
+for group in wordCountGroups:
+    print '\t' + str(group[0]) + '\t' + str(group[1])
+print "Utterance count per conversation distribution = "
+for group in utteranceCountGroups:
+    print '\t' + str(group[0]) + '\t' + str(group[1])
 print "Top " + str(TOP_WORDS) + " occuring words = "
 for word in topWords:
     print '\t' + word[0] + '\t' + str(word[1])
