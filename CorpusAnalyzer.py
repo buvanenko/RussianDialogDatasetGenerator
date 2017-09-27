@@ -27,7 +27,7 @@ ENCODING = 'utf-8'
 ISO_LANGUAGE_CODE = 'rus'
 
 # input file name
-INPUT_FILE_NAME = 'groupname_rus.xml'
+INPUT_FILE_NAME = 'russians_rus.xml'
 
 # tags and attributes of the input xml file
 ROOT = 'dialog'

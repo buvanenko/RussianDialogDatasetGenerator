@@ -27,7 +27,7 @@ import codecs
 import xml.etree.cElementTree as ET
 
 INPUT_FILE_NAME = 'items.json'
-OUTPUT_FILE_NAME = 'groupname_rus.xml'
+OUTPUT_FILE_NAME = 'russians_rus.xml'
 
 ENCODING = 'utf-8'
 
