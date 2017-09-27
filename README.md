@@ -1,3 +1,8 @@
+# Russian Dialog Corpus
+<b>The Russian Dialog Corpus is contained in the file titled <i>russians_rus.xml</i> at the root of this repository.<br>
+Alternatively, the corpus can be viewed by navigating to the following webpage:</b>
+  - https://github.com/FredGlozman/RussianDialogDatasetGenerator/blob/master/russians_rus.xml
+
 # RussianDialogDatasetGenerator
 A few Python scripts that crawl Russian forums, extract human conversations, and generate an XML corpus containing the acquired dialogs.
 
